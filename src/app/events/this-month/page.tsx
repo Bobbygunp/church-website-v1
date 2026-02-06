@@ -1,4 +1,6 @@
-// app/events/this-month/page.tsx
+import DOMPurify from 'dompurify';
+import { JSDOM } from 'jsdom';
+
 import Image from "next/image";
 import Link from "next/link";
 import { PrismaClient } from "@prisma/client";
@@ -8,7 +10,7 @@ import Navbar from "@/components/Navbar";
 const prisma = new PrismaClient();
 
 // This function fetches the data from your database
-async function getLatestEvent() {
+export async function getLatestEvent() {
   // We try to find the event marked as "isFeatured", or just the most recent one
   const event = await prisma.event.findFirst({
     where: { isFeatured: true },
@@ -39,6 +41,15 @@ export default async function ThisMonthPage() {
     speakerBio: "An inspiring speaker with a passion for ministry.",
     speakerImage: null, // or "/api/placeholder/..."
   };
+
+  const window = new JSDOM('').window;
+  const purify = DOMPurify(window, {
+    ADD_TAGS: ['ul', 'li'], // Explicitly allow ul and li tags
+    ADD_ATTR: ['style'],    // Explicitly allow style attributes (though usually allowed by default)
+  });
+
+  const sanitizedGreeting = purify.sanitize(data.greeting);
+  const sanitizedSpeakerBio = purify.sanitize(data.speakerBio);
 
   return (
     <main className="min-h-screen bg-gray-50 pb-20 pt-35">
@@ -84,9 +95,7 @@ export default async function ThisMonthPage() {
         {/* 3. Personal Greeting */}
         <div className="bg-white rounded-xl shadow-sm p-8 mb-8 text-center">
           <h2 className="text-2xl font-bold text-slate-800 mb-4">Greetings in the name of our Lord</h2>
-          <p className="text-gray-600 leading-relaxed text-lg">
-            {data.greeting}
-          </p>
+          <div className="text-gray-600 leading-relaxed text-lg" dangerouslySetInnerHTML={{ __html: sanitizedGreeting }} />
         </div>
 
         {/* 4. Event Logistics (Date & Address) */}
@@ -136,9 +145,7 @@ export default async function ThisMonthPage() {
           <div className="p-8 md:w-2/3 flex flex-col justify-center">
             <h3 className="text-blue-600 font-bold tracking-wide uppercase text-sm mb-2">Guest Speaker</h3>
             <h2 className="text-3xl font-bold text-slate-900 mb-4">{data.speakerName}</h2>
-            <p className="text-gray-600 leading-relaxed mb-6">
-              {data.speakerBio}
-            </p>
+            <div className="text-gray-600 leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: sanitizedSpeakerBio }} />
           </div>
         </div>
 
@@ -157,7 +164,6 @@ export default async function ThisMonthPage() {
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              {/* Email Us */}
             </a>
 
             {/* YouTube Button */}
@@ -170,7 +176,6 @@ export default async function ThisMonthPage() {
               <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                  <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
               </svg>
-              {/* Watch Live */}
             </a>
           </div>
         </div>

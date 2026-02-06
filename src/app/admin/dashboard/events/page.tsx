@@ -1,6 +1,10 @@
+// app/admin/dashboard/events/page.tsx
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const TiptapEditor = dynamic(() => import("@/components/TiptapEditor"), { ssr: false });
 
 export default function EditEventPage() {
   const router = useRouter();
@@ -11,7 +15,7 @@ export default function EditEventPage() {
   const [formData, setFormData] = useState({
     title: "Monthly Fellowship",
     startDate: "",
-    location: "Bethel Church of Santa Clara, 3536 Monroe St, Santa Clara, CA 95051",
+    location: "Bethel Church of Santa Clara\n3536 Monroe St, Santa Clara, CA 95051",
     verseEnglish: "",
     verseRefEnglish: "",
     verseTelugu: "",
@@ -19,11 +23,46 @@ export default function EditEventPage() {
     greeting: "",
     speakerName: "",
     speakerBio: "",
-    speakerImage: "",
+    speakerImage: "", // Stores the Base64 string
   });
 
+  // Standard handler for text inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleRichTextChange = (name: string, value: string) => {
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // FIXED: Special handler for Image Uploads
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      // 1. Check file size (Increased limit to 4MB)
+      if (file.size > 4 * 1024 * 1024) {
+        setMessage("Error: Image size must be less than 4MB");
+        e.target.value = ""; // Reset input so they can retry
+        return;
+      }
+
+      // 2. Clear errors
+      setMessage("");
+
+      // 3. Convert File to Base64 String
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prev) => ({
+          ...prev,
+          speakerImage: reader.result as string,
+        }));
+      };
+      reader.readAsDataURL(file);
+      
+      // 4. Reset the input value so you can re-upload the same file if needed
+      e.target.value = ""; 
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -40,7 +79,7 @@ export default function EditEventPage() {
 
       if (res.ok) {
         setMessage("Event updated successfully!");
-        router.refresh(); // Refresh data
+        router.refresh();
       } else {
         setMessage("Error updating event.");
       }
@@ -69,15 +108,15 @@ export default function EditEventPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700">Event Title</label>
-              <input type="text" name="title" value={formData.title} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2 text-[#535050]" required />
+              <input type="text" name="title" value={formData.title} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" required />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Date & Time</label>
-              <input type="datetime-local" name="startDate" value={formData.startDate} onChange={handleChange} className="mt-1 block w-full text-[#535050] rounded-md border-gray-300 shadow-sm border p-2" required />
+              <input type="datetime-local" name="startDate" value={formData.startDate} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" required />
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700">Location</label>
-              <input type="text" name="location" value={formData.location} onChange={handleChange} className="mt-1 block w-full text-[#535050] rounded-md border-gray-300 shadow-sm border p-2" required />
+              <input type="text" name="location" value={formData.location} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" required />
             </div>
           </div>
         </div>
@@ -90,22 +129,22 @@ export default function EditEventPage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Verse (English)</label>
-                <textarea name="verseEnglish" rows={3} value={formData.verseEnglish} onChange={handleChange} className="mt-1 text-[#535050] block w-full rounded-md border-gray-300 shadow-sm border p-2" />
+                <textarea name="verseEnglish" rows={3} value={formData.verseEnglish} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Reference (English)</label>
-                <input type="text" name="verseRefEnglish" placeholder="e.g. Psalm 23:1" value={formData.verseRefEnglish} onChange={handleChange} className="mt-1 text-[#535050] block w-full rounded-md border-gray-300 shadow-sm border p-2" />
+                <input type="text" name="verseRefEnglish" placeholder="e.g. Psalm 23:1" value={formData.verseRefEnglish} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" />
               </div>
             </div>
             {/* Telugu */}
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Verse (Telugu)</label>
-                <textarea name="verseTelugu" rows={3} value={formData.verseTelugu} onChange={handleChange} className="mt-1 block w-full text-[#535050] rounded-md border-gray-300 shadow-sm border p-2" />
+                <textarea name="verseTelugu" rows={3} value={formData.verseTelugu} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Reference (Telugu)</label>
-                <input type="text" name="verseRefTelugu" placeholder="e.g. కీర్తనలు 23:1" value={formData.verseRefTelugu} onChange={handleChange} className="mt-1 text-[#535050] block w-full rounded-md border-gray-300 shadow-sm border p-2" />
+                <input type="text" name="verseRefTelugu" placeholder="e.g. కీర్తనలు 23:1" value={formData.verseRefTelugu} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" />
               </div>
             </div>
           </div>
@@ -117,22 +156,44 @@ export default function EditEventPage() {
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700">Monthly Greeting</label>
-              <textarea name="greeting" rows={3} value={formData.greeting} onChange={handleChange} className="mt-1 text-[#535050] block w-full rounded-md border-gray-300 shadow-sm border p-2" />
+              <TiptapEditor value={formData.greeting} onChange={(value) => handleRichTextChange("greeting", value)} />
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Speaker Name</label>
-                <input type="text" name="speakerName" value={formData.speakerName} onChange={handleChange} className="mt-1 text-[#535050] block w-full rounded-md border-gray-300 shadow-sm border p-2" />
+                <input type="text" name="speakerName" value={formData.speakerName} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" />
               </div>
+              
+              {/* Image Upload Section */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">Speaker Image URL</label>
-                <input type="text" name="speakerImage" placeholder="https://..." value={formData.speakerImage} onChange={handleChange} className="mt-1 text-[#535050] block w-full rounded-md border-gray-300 shadow-sm border p-2" />
+                <label className="block text-sm font-medium text-gray-700">Speaker Image (Upload)</label>
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  onChange={handleImageChange} 
+                  className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" 
+                />
+                
+                {/* Preview the selected image */}
+                {formData.speakerImage && (
+                  <div className="mt-4 relative w-24 h-24 rounded-md overflow-hidden border border-gray-300">
+                    <img 
+                      src={formData.speakerImage} 
+                      alt="Preview" 
+                      className="w-full h-full object-cover" 
+                    />
+                  </div>
+                )}
               </div>
             </div>
+            
             <div>
               <label className="block text-sm font-medium text-gray-700">Speaker Bio</label>
-              <textarea name="speakerBio" rows={4} value={formData.speakerBio} onChange={handleChange} className="mt-1 block w-full text-[#535050] rounded-md border-gray-300 shadow-sm border p-2" />
+              <TiptapEditor value={formData.speakerBio} onChange={(value) => handleRichTextChange("speakerBio", value)} />
+
+
+
             </div>
           </div>
         </div>

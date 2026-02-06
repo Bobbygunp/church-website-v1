@@ -42,25 +42,22 @@ export default function Home() {
         <div className="max-w-screen-xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-8">Service Times</h2>
           <div className="grid md:grid-cols-1 gap-8">
-            {/* <div className="p-6 bg-slate-50 rounded-lg shadow-sm border border-slate-100">
-              <h3 className="text-xl font-bold text-blue-600 mb-2">Sunday Worship</h3>
-              <p className="text-gray-600">10:00 AM & 6:00 PM</p>
-              <p className="text-sm text-gray-500 mt-2">Main Sanctuary</p>
-            </div> */}
             <div className="p-6 bg-slate-50 rounded-lg shadow-sm border border-slate-100">
               <h3 className="text-xl font-bold text-blue-600 mb-2">Monthly Gathering</h3>
               <p className="text-gray-600">Every 4<sup className="leading-none text-xs">th</sup> Saturday at 6:00 PM</p>
               <p className="text-sm text-gray-500 mt-2">Bethel Church of Santa Clara, 3536 Monroe St, Santa Clara, CA 95051</p>
             </div>
-            {/* <div className="p-6 bg-slate-50 rounded-lg shadow-sm border border-slate-100">
-              <h3 className="text-xl font-bold text-blue-600 mb-2">Youth Group</h3>
-              <p className="text-gray-600">Fridays at 6:30 PM</p>
-              <p className="text-sm text-gray-500 mt-2">Youth Center</p>
-            </div> */}
           </div>
         </div>
       </section>
 
+      {/* FOOTER */}
+      <footer className="bg-slate-900 text-white py-8">
+        <div className="max-w-screen-xl mx-auto px-4 text-center">
+          <p>&copy; {new Date().getFullYear()} Church Website. All rights reserved.</p>
+          <p className="mt-2 text-sm">Built with ❤️ for the community.</p>
+        </div>
+      </footer>
     </main>
   );
 }
