@@ -36,32 +36,54 @@ export default function EditEventPage() {
   };
 
   // FIXED: Special handler for Image Uploads
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    if (!file) return;
 
-    if (file) {
-      // 1. Check file size (Increased limit to 4MB)
-      if (file.size > 4 * 1024 * 1024) {
-        setMessage("Error: Image size must be less than 4MB");
-        e.target.value = ""; // Reset input so they can retry
-        return;
+    // Reset status
+    setMessage("");
+    setLoading(true);
+
+    try {
+      // 1. Get a pre-signed URL from your API
+      const res = await fetch('/api/s3/upload-url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contentType: file.type }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to get pre-signed URL.');
       }
 
-      // 2. Clear errors
-      setMessage("");
+      const { signedUrl, objectUrl } = await res.json();
 
-      // 3. Convert File to Base64 String
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData((prev) => ({
-          ...prev,
-          speakerImage: reader.result as string,
-        }));
-      };
-      reader.readAsDataURL(file);
-      
-      // 4. Reset the input value so you can re-upload the same file if needed
-      e.target.value = ""; 
+      // 2. Upload the file to the pre-signed URL
+      const uploadRes = await fetch(signedUrl, {
+        method: 'PUT',
+        body: file,
+        headers: { 'Content-Type': file.type },
+      });
+
+      if (!uploadRes.ok) {
+        throw new Error('Failed to upload image to S3.');
+      }
+
+      // 3. Store the final URL in the form state
+      setFormData((prev) => ({
+        ...prev,
+        speakerImage: objectUrl,
+      }));
+
+      setMessage("Image uploaded successfully!");
+
+    } catch (error) {
+      console.error('Image upload error:', error);
+      setMessage(`Error: ${error instanceof Error ? error.message : 'Image upload failed.'}`);
+    } finally {
+      setLoading(false);
+      // Reset the file input so you can re-upload the same file if needed
+      e.target.value = "";
     }
   };
 
