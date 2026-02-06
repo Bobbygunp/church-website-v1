@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // or "sqlite" if you want to test locally without a server first
+  url      = env("DATABASE_URL")
+}
+
+// 1. User Model (For Church Staff/Admins)
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // Hashed password
+  name      String?
+  role      String   @default("ADMIN") // Could be 'ADMIN' or 'EDITOR'
+  createdAt DateTime @default(now())
+}
+
+// 2. Speaker Model (Pastors, Guest Speakers)
+model Speaker {
+  id        String   @id @default(cuid())
+  name      String
+  bio       String?  @db.Text
+  photoUrl  String?  // URL to image storage (e.g., AWS S3 or Cloudinary)
+  sermons   Sermon[] // Relation: One speaker has many sermons
+}
+
+// 3. Sermon Model
+model Sermon {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique // For pretty URLs like /sermons/faith-in-action
+  description String?  @db.Text
+  videoUrl    String   // YouTube or Vimeo link
+  date        DateTime
+  
+  // Relation to Speaker
+  speakerId   String
+  speaker     Speaker  @relation(fields: [speakerId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// 4. Event Model
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @db.Text
+  location    String
+  startDate   DateTime
+  endDate     DateTime?
+  isFeatured  Boolean  @default(false) // To pin to homepage
+}
