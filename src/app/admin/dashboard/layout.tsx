@@ -2,7 +2,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOut, SessionProvider } from "next-auth/react";
 
 export default function AdminLayout({
   children,
@@ -15,6 +15,7 @@ export default function AdminLayout({
     { name: "Overview", href: "/admin/dashboard" },
     { name: "Manage Monthly Event", href: "/admin/dashboard/events" },
     { name: "Manage Sermons", href: "/admin/dashboard/sermons" }, // Placeholder for later
+    { name: "Manage Admins", href: "/admin/dashboard/manage-admins" },
   ];
 
   return (
@@ -56,7 +57,7 @@ export default function AdminLayout({
 
       {/* Main Content Area */}
       <main className="flex-1 p-8 overflow-y-auto">
-        {children}
+        <SessionProvider>{children}</SessionProvider>
       </main>
     </div>
   );
