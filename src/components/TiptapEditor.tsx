@@ -29,9 +29,6 @@ const TiptapEditor = ({ value, onChange }: { value: string; onChange: (value: st
         // Disable default extensions that we want to override or reconfigure
         bulletList: false, // will use custom BulletList
         listItem: false,   // will use custom ListItem
-        textAlign: false,  // will use custom TextAlign
-        color: false,      // will use custom Color
-        textStyle: false,  // will use custom TextStyle
       }),
       Paragraph, // Add Paragraph for more control over text blocks
       BulletList.configure({
@@ -141,7 +138,7 @@ const TiptapEditor = ({ value, onChange }: { value: string; onChange: (value: st
         <div className="relative">
           <input
             type="color"
-            onInput={handleColorChange}
+            onChange={handleColorChange}
             value={editor.getAttributes("textStyle").color || "#000000"}
             className="h-8 w-8 cursor-pointer rounded-md overflow-hidden bg-gray-100 hover:bg-gray-200"
             title="Text Color"

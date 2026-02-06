@@ -43,13 +43,16 @@ export default async function ThisMonthPage() {
   };
 
   const window = new JSDOM('').window;
-  const purify = DOMPurify(window, {
+  const configuredPurify = DOMPurify(window); // Initialize DOMPurify with the window object
+
+  const sanitizedGreeting = configuredPurify.sanitize(data.greeting, {
     ADD_TAGS: ['ul', 'li'], // Explicitly allow ul and li tags
     ADD_ATTR: ['style'],    // Explicitly allow style attributes (though usually allowed by default)
   });
-
-  const sanitizedGreeting = purify.sanitize(data.greeting);
-  const sanitizedSpeakerBio = purify.sanitize(data.speakerBio);
+  const sanitizedSpeakerBio = configuredPurify.sanitize(data.speakerBio, {
+    ADD_TAGS: ['ul', 'li'], // Explicitly allow ul and li tags
+    ADD_ATTR: ['style'],    // Explicitly allow style attributes (though usually allowed by default)
+  });
 
   return (
     <main className="min-h-screen bg-gray-50 pb-20 pt-35">
