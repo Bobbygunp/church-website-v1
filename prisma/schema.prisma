@@ -53,9 +53,26 @@ model Sermon {
 model Event {
   id          String   @id @default(cuid())
   title       String
-  description String?  @db.Text
-  location    String
+  
+  // Event Details
   startDate   DateTime
-  endDate     DateTime?
-  isFeatured  Boolean  @default(false) // To pin to homepage
+  location    String
+  
+  // Dynamic Content for the Page
+  verseEnglish    String  @db.Text // "The Lord is my shepherd..."
+  verseTelugu     String  @db.Text // "యెహోవా నా కాపరి..."
+  
+  verseRefEnglish String           // "Psalms 23:1"
+  verseRefTelugu  String           // "కీర్తనలు 23:1"
+  
+  greeting     String  @db.Text 
+  
+  speakerName  String
+  speakerBio   String  @db.Text
+  speakerImage String?          
+  
+  // Standard fields
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  isFeatured   Boolean  @default(false)
 }
