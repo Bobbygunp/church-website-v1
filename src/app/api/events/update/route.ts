@@ -44,6 +44,6 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error("Failed to update event:", error);
     console.error("Data that caused the error:", data); // Log the data that caused the error
-    return NextResponse.json({ error: `Failed to update: ${error.message || 'Unknown error'}` }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to update due to an internal server error.' }, { status: 500 });
   }
 }
