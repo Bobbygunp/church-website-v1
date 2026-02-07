@@ -31,7 +31,6 @@ export async function POST(request: Request) {
       Bucket: bucketName,
       Key: key,
       ContentType: contentType,
-      ACL: 'public-read', // Make the uploaded object publicly readable
     });
 
     const signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 60 }); // URL expires in 60 seconds
