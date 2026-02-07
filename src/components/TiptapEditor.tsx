@@ -29,6 +29,7 @@ const TiptapEditor = ({ value, onChange }: { value: string; onChange: (value: st
         // Disable default extensions that we want to override or reconfigure
         bulletList: false, // will use custom BulletList
         listItem: false,   // will use custom ListItem
+        paragraph: false,  // will use custom Paragraph
       }),
       Paragraph, // Add Paragraph for more control over text blocks
       BulletList.configure({

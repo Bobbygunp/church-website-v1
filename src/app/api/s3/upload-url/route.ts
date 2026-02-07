@@ -11,6 +11,7 @@ const s3Client = new S3Client({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
   },
+  signatureVersion: 'v4',
 });
 
 export async function POST(request: Request) {
@@ -31,6 +32,7 @@ export async function POST(request: Request) {
       Bucket: bucketName,
       Key: key,
       ContentType: contentType,
+      ACL: 'public-read', // Make the uploaded object publicly readable
     });
 
     const signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 60 }); // URL expires in 60 seconds
