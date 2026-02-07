@@ -4,8 +4,10 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
+  let data: any = null; // Declare data outside try block
+
   try {
-    const data = await req.json();
+    data = await req.json();
     console.log("Received data for event update:", data); // Log incoming data
 
     // First, try to find an existing featured event to get its ID
