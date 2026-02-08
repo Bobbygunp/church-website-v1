@@ -6,6 +6,8 @@ import Link from "next/link";
 import { PrismaClient } from "@prisma/client";
 import Navbar from "@/components/Navbar";
 
+export const dynamic = 'force-dynamic'; // Force dynamic rendering for this page
+
 // Initialize Prisma
 const prisma = new PrismaClient();
 
