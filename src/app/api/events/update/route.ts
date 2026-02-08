@@ -29,7 +29,10 @@ export async function POST(req: Request) {
           startDate: new Date(dataToSave.startDate), // Ensure date string is converted
         }
       });
-      revalidatePath('/events/this-month', 'page'); // Revalidate the page
+      revalidatePath('/events/this-month', 'layout'); // Revalidate the page and its layout
+      revalidatePath('/', 'layout'); // Revalidate the home page
+      revalidatePath('/events', 'layout'); // Revalidate the events page
+      console.log("Revalidation triggered for /events/this-month, /, and /events");
       return NextResponse.json(updated);
     } else {
       // Create new
@@ -40,7 +43,10 @@ export async function POST(req: Request) {
           isFeatured: true
         }
       });
-      revalidatePath('/events/this-month', 'page'); // Revalidate the page
+      revalidatePath('/events/this-month', 'layout'); // Revalidate the page and its layout
+      revalidatePath('/', 'layout'); // Revalidate the home page
+      revalidatePath('/events', 'layout'); // Revalidate the events page
+      console.log("Revalidation triggered for /events/this-month, /, and /events");
       return NextResponse.json(created);
     }
 
