@@ -90,6 +90,7 @@ export default function EditEventPage() {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+    console.log("handleSubmit triggered. formData:", formData); // Debugging log
 
     try {
       const res = await fetch("/api/events/update", {
@@ -99,15 +100,21 @@ export default function EditEventPage() {
       });
 
       if (res.ok) {
+        const result = await res.json(); // Log response from API
+        console.log("API update successful:", result); // Debugging log
         setMessage("Event updated successfully!");
         router.refresh();
       } else {
-        setMessage("Error updating event.");
+        const errorText = await res.text(); // Log error response from API
+        console.error("API update failed with status:", res.status, "response:", errorText); // Debugging log
+        setMessage(`Error updating event: ${errorText}`);
       }
     } catch (error) {
+      console.error("handleSubmit catch block error:", error); // Debugging log
       setMessage("Something went wrong.");
     } finally {
       setLoading(false);
+      console.log("handleSubmit finished. Loading set to false."); // Debugging log
     }
   };
 
@@ -197,6 +204,8 @@ export default function EditEventPage() {
                 />
                 
                 {/* Preview the selected image */}
+
+
                 {formData.speakerImage && (
                   <div className="mt-4 relative w-24 h-24 rounded-md overflow-hidden border border-gray-300">
                     <img 
