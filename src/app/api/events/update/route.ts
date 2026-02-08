@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 const prisma = new PrismaClient();
 
@@ -28,6 +29,7 @@ export async function POST(req: Request) {
           startDate: new Date(dataToSave.startDate), // Ensure date string is converted
         }
       });
+      revalidatePath('/events/this-month', 'page'); // Revalidate the page
       return NextResponse.json(updated);
     } else {
       // Create new
@@ -38,6 +40,7 @@ export async function POST(req: Request) {
           isFeatured: true
         }
       });
+      revalidatePath('/events/this-month', 'page'); // Revalidate the page
       return NextResponse.json(created);
     }
 
