@@ -1,6 +1,3 @@
-import DOMPurify from 'dompurify';
-import { JSDOM } from 'jsdom';
-
 import Image from "next/image";
 import Link from "next/link";
 import { PrismaClient } from "@prisma/client";
@@ -47,17 +44,8 @@ export default async function ThisMonthPage() {
     speakerImage: null, // or "/api/placeholder/..."
   };
 
-  const window = new JSDOM('').window;
-  const configuredPurify = DOMPurify(window); // Initialize DOMPurify with the window object
-
-  const sanitizedGreeting = configuredPurify.sanitize(data.greeting, {
-    ADD_TAGS: ['ul', 'li'], // Explicitly allow ul and li tags
-    ADD_ATTR: ['style'],    // Explicitly allow style attributes (though usually allowed by default)
-  });
-  const sanitizedSpeakerBio = configuredPurify.sanitize(data.speakerBio, {
-    ADD_TAGS: ['ul', 'li'], // Explicitly allow ul and li tags
-    ADD_ATTR: ['style'],    // Explicitly allow style attributes (though usually allowed by default)
-  });
+  const sanitizedGreeting = data.greeting; // Temporarily use raw HTML for debugging
+  const sanitizedSpeakerBio = data.speakerBio; // Temporarily use raw HTML for debugging
 
   return (
     <main className="min-h-screen bg-gray-50 pb-20 pt-35">
