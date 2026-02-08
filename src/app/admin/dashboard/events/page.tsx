@@ -35,7 +35,7 @@ export default function EditEventPage() {
     setFormData({ ...formData, [name]: value });
   };
 
-  // FIXED: Special handler for Image Uploads
+  // Special handler for Image Uploads
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -75,9 +75,16 @@ export default function EditEventPage() {
         speakerImage: objectUrl,
       }));
 
-            setMessage("Image uploaded successfully!");
+      setMessage("Image uploaded successfully!");
 
-      
+    } catch (error) {
+      console.error('Image upload error:', error);
+      setMessage(`Error: ${error instanceof Error ? error.message : 'Image upload failed.'}`);
+    } finally {
+      setLoading(false);
+      // Removed: e.target.value = ""; // Keep the file name in the input
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
