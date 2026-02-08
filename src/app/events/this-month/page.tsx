@@ -11,15 +11,18 @@ const prisma = new PrismaClient();
 
 // This function fetches the data from your database
 export async function getLatestEvent() {
+  console.log("Fetching latest event data..."); // Debugging log
   // We try to find the event marked as "isFeatured", or just the most recent one
   const event = await prisma.event.findFirst({
     where: { isFeatured: true },
     orderBy: { startDate: 'desc' },
   });
+  console.log("Fetched event data:", event?.speakerImage); // Debugging log
   return event;
 }
 
 export default async function ThisMonthPage() {
+  console.log("ThisMonthPage server component rendering."); // Debugging log
   // Fetch data
   const event = await getLatestEvent();
 

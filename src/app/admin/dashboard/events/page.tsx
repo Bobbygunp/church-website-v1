@@ -206,6 +206,8 @@ export default function EditEventPage() {
                 {/* Preview the selected image */}
 
 
+
+
                 {formData.speakerImage && (
                   <div className="mt-4 relative w-24 h-24 rounded-md overflow-hidden border border-gray-300">
                     <img 
