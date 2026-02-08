@@ -75,17 +75,9 @@ export default function EditEventPage() {
         speakerImage: objectUrl,
       }));
 
-      setMessage("Image uploaded successfully!");
+            setMessage("Image uploaded successfully!");
 
-    } catch (error) {
-      console.error('Image upload error:', error);
-      setMessage(`Error: ${error instanceof Error ? error.message : 'Image upload failed.'}`);
-    } finally {
-      setLoading(false);
-      // Reset the file input so you can re-upload the same file if needed
-      e.target.value = "";
-    }
-  };
+      
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
