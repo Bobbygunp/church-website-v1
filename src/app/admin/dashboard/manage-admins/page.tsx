@@ -109,7 +109,7 @@ export default function ManageAdminsPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter email to invite"
-            className="flex-grow rounded-md border-gray-300 shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+            className="flex-grow text-[#403E3E] rounded-md border-gray-300 shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
           />
           <button
             onClick={handleInvite}
