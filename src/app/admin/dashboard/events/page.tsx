@@ -136,15 +136,15 @@ export default function EditEventPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700">Event Title</label>
-              <input type="text" name="title" value={formData.title} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" required />
+              <input type="text" name="title" value={formData.title} onChange={handleChange} className="mt-1 text-[#403E3E] block w-full rounded-md border-gray-300 shadow-sm border p-2" required />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Date & Time</label>
-              <input type="datetime-local" name="startDate" value={formData.startDate} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" required />
+              <input type="datetime-local" name="startDate" value={formData.startDate} onChange={handleChange} className="mt-1 text-[#403E3E] block w-full rounded-md border-gray-300 shadow-sm border p-2" required />
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700">Location</label>
-              <input type="text" name="location" value={formData.location} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" required />
+              <input type="text" name="location" value={formData.location} onChange={handleChange} className="mt-1 text-[#403E3E] block w-full rounded-md border-gray-300 shadow-sm border p-2" required />
             </div>
           </div>
         </div>
@@ -157,22 +157,22 @@ export default function EditEventPage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Verse (English)</label>
-                <textarea name="verseEnglish" rows={3} value={formData.verseEnglish} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" />
+                <textarea name="verseEnglish" rows={3} value={formData.verseEnglish} onChange={handleChange} className="mt-1 text-[#403E3E] block w-full rounded-md border-gray-300 shadow-sm border p-2" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Reference (English)</label>
-                <input type="text" name="verseRefEnglish" placeholder="e.g. Psalm 23:1" value={formData.verseRefEnglish} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" />
+                <input type="text" name="verseRefEnglish" placeholder="e.g. Psalm 23:1" value={formData.verseRefEnglish} onChange={handleChange} className="mt-1 text-[#403E3E] block w-full rounded-md border-gray-300 shadow-sm border p-2" />
               </div>
             </div>
             {/* Telugu */}
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Verse (Telugu)</label>
-                <textarea name="verseTelugu" rows={3} value={formData.verseTelugu} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" />
+                <textarea name="verseTelugu" rows={3} value={formData.verseTelugu} onChange={handleChange} className="mt-1 text-[#403E3E] block w-full rounded-md border-gray-300 shadow-sm border p-2" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Reference (Telugu)</label>
-                <input type="text" name="verseRefTelugu" placeholder="e.g. కీర్తనలు 23:1" value={formData.verseRefTelugu} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" />
+                <input type="text" name="verseRefTelugu" placeholder="e.g. కీర్తనలు 23:1" value={formData.verseRefTelugu} onChange={handleChange} className="mt-1 text-[#403E3E] block w-full rounded-md border-gray-300 shadow-sm border p-2" />
               </div>
             </div>
           </div>
@@ -190,7 +190,7 @@ export default function EditEventPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Speaker Name</label>
-                <input type="text" name="speakerName" value={formData.speakerName} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" />
+                <input type="text" name="speakerName" value={formData.speakerName} onChange={handleChange} className="mt-1 text-[#403E3E] block w-full rounded-md border-gray-300 shadow-sm border p-2" />
               </div>
               
               {/* Image Upload Section */}
